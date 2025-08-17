@@ -137,7 +137,7 @@ function Tourist:GetLevelColor(zone)
 		end
 	end
 	local low, high = lows[zone], highs[zone]
-	
+
 	if low <= 0 and high <= 0 then
 		-- City
 		return 1, 1, 1
@@ -185,9 +185,9 @@ end
 
 function Tourist:IterateZoneInstances(zone)
 	self:argCheck(zone, 2, "string")
-	
+
 	local inst = instances[zone]
-	
+
 	if not inst then
 		return retNil
 	elseif type(inst) == "table" then
@@ -436,31 +436,31 @@ end
 
 function Tourist:GetContinent(zone)
 	self:argCheck(zone, 2, "string")
-	
+
 	return continents[zone] or UNKNOWN
 end
 
 function Tourist:IsInKalimdor(zone)
 	self:argCheck(zone, 2, "string")
-	
+
 	return continents[zone] == Kalimdor
 end
 
 function Tourist:IsInEasternKingdoms(zone)
 	self:argCheck(zone, 2, "string")
-	
+
 	return continents[zone] == Eastern_Kingdoms
 end
 
 function Tourist:IsInOutland(zone)
 	self:argCheck(zone, 2, "string")
-	
+
 	return continents[zone] == Outland
 end
 
 function Tourist:GetInstanceGroupSize(instance)
 	self:argCheck(instance, 2, "string")
-	
+
 	return groupSizes[instance] or 0
 end
 
@@ -483,11 +483,11 @@ end
 setmetatable(cost, {
 	__index = function(self, vertex)
 		local price = 1
-		
+
 		if lows[vertex] > playerLevel then
 			price = price * (1 + math.ceil((lows[vertex] - playerLevel) / 6))
 		end
-		
+
 		if factions[vertex] == (isHorde and "Horde" or "Alliance") then
 			price = price / 2
 		elseif factions[vertex] == (isHorde and "Alliance" or "Horde") then
@@ -497,11 +497,11 @@ setmetatable(cost, {
 				price = price * 3
 			end
 		end
-		
+
 		if types[x] == "Transport" then
 			price = price * 2
 		end
-		
+
 		self[vertex] = price
 		return price
 	end
@@ -510,11 +510,11 @@ setmetatable(cost, {
 function Tourist:IteratePath(alpha, bravo)
 	self:argCheck(alpha, 2, "string")
 	self:argCheck(bravo, 3, "string")
-	
+
 	if paths[alpha] == nil or paths[bravo] == nil then
 		return retNil
 	end
-	
+
 	local d = next(stack) or {}
 	stack[d] = nil
 	local Q = next(stack) or {}
@@ -523,13 +523,13 @@ function Tourist:IteratePath(alpha, bravo)
 	stack[S] = nil
 	local pi = next(stack) or {}
 	stack[pi] = nil
-	
+
 	for vertex, v in pairs(paths) do
 		d[vertex] = inf
 		Q[vertex] = v
 	end
 	d[alpha] = 0
-	
+
 	while next(Q) do
 		local u
 		local min = inf
@@ -547,7 +547,7 @@ function Tourist:IteratePath(alpha, bravo)
 		if u == bravo then
 			break
 		end
-		
+
 		local adj = paths[u]
 		if type(adj) == "table" then
 			local d_u = d[u]
@@ -566,7 +566,7 @@ function Tourist:IteratePath(alpha, bravo)
 			end
 		end
 	end
-	
+
 	local i = 1
 	local last = bravo
 	while last do
@@ -574,7 +574,7 @@ function Tourist:IteratePath(alpha, bravo)
 		i = i + 1
 		last = pi[last]
 	end
-	
+
 	for k in pairs(pi) do
 		pi[k] = nil
 	end
@@ -587,9 +587,9 @@ function Tourist:IteratePath(alpha, bravo)
 	stack[pi] = true
 	stack[Q] = true
 	stack[d] = true
-	
+
 	S['#'] = i
-	
+
 	return iterator, S
 end
 
@@ -614,7 +614,7 @@ local function activate(self, oldLib, oldDeactivate)
 	self.frame:SetScript("OnEvent", function()
 		PLAYER_LEVEL_UP(self)
 	end)
-	
+
 	local BOOTYBAY_RATCHET_BOAT = string.format(X_Y_BOAT, Z["Booty Bay"], Z["Ratchet"])
 	local MENETHIL_THERAMORE_BOAT = string.format(X_Y_BOAT, Z["Menethil Harbor"], Z["Theramore Isle"])
 	local MENETHIL_AUBERDINE_BOAT = string.format(X_Y_BOAT, Z["Menethil Harbor"], Z["Auberdine"])
@@ -631,9 +631,9 @@ local function activate(self, oldLib, oldDeactivate)
 	local SHATTRATH_UNDERCITY_PORTAL = string.format(X_Y_PORTAL, Z["Shattrath City"], Z["Undercity"])
 	local SHATTRATH_EXODAR_PORTAL = string.format(X_Y_PORTAL, Z["Shattrath City"], Z["The Exodar"])
 	local SHATTRATH_SILVERMOON_PORTAL = string.format(X_Y_PORTAL, Z["Shattrath City"], Z["Silvermoon City"])
-	
+
 	local zones = {}
-	
+
 	if expansion then
 		zones[AUBERDINE_AZUREMYST_BOAT] = {
 			paths = {
@@ -644,7 +644,7 @@ local function activate(self, oldLib, oldDeactivate)
 			type = "Transport",
 		}
 	end
-	
+
 	zones[AUBERDINE_DARNASSUS_BOAT] = {
 		paths = {
 			[Z["Darkshore"]] = true,
@@ -653,7 +653,7 @@ local function activate(self, oldLib, oldDeactivate)
 		faction = "Alliance",
 		type = "Transport",
 	}
-	
+
 	zones[BOOTYBAY_RATCHET_BOAT] = {
 		paths = {
 			[Z["Stranglethorn Vale"]] = true,
@@ -661,7 +661,7 @@ local function activate(self, oldLib, oldDeactivate)
 		},
 		type = "Transport",
 	}
-	
+
 	zones[MENETHIL_AUBERDINE_BOAT] = {
 		paths = {
 			[Z["Wetlands"]] = true,
@@ -670,7 +670,7 @@ local function activate(self, oldLib, oldDeactivate)
 		faction = "Alliance",
 		type = "Transport",
 	}
-	
+
 	zones[MENETHIL_THERAMORE_BOAT] = {
 		paths = {
 			[Z["Wetlands"]] = true,
@@ -679,7 +679,7 @@ local function activate(self, oldLib, oldDeactivate)
 		faction = "Alliance",
 		type = "Transport",
 	}
-	
+
 	zones[ORGRIMMAR_GROMGOL_ZEPPELIN] = {
 		paths = {
 			[Z["Durotar"]] = true,
@@ -688,7 +688,7 @@ local function activate(self, oldLib, oldDeactivate)
 		faction = "Horde",
 		type = "Transport",
 	}
-	
+
 	zones[ORGRIMMAR_UNDERCITY_ZEPPELIN] = {
 		paths = {
 			[Z["Durotar"]] = true,
@@ -697,48 +697,48 @@ local function activate(self, oldLib, oldDeactivate)
 		faction = "Horde",
 		type = "Transport",
 	}
-	
+
 	if expansion then
 		zones[SHATTRATH_DARNASSUS_PORTAL] = {
 			paths = Z["Darnassus"],
 			type = "Transport",
 		}
-		
+
 		zones[SHATTRATH_EXODAR_PORTAL] = {
 			paths = Z["The Exodar"],
 			type = "Transport",
 		}
-		
+
 		zones[SHATTRATH_IRONFORGE_PORTAL] = {
 			paths = Z["Ironforge"],
 			type = "Transport",
 		}
-		
+
 		zones[SHATTRATH_ORGRIMMAR_PORTAL] = {
 			paths = Z["Orgrimmar"],
 			type = "Transport",
 		}
-		
+
 		zones[SHATTRATH_SILVERMOON_PORTAL] = {
 			paths = Z["Silvermoon City"],
 			type = "Transport",
 		}
-		
+
 		zones[SHATTRATH_STORMWIND_PORTAL] = {
 			paths = Z["Stormwind City"],
 			type = "Transport",
 		}
-		
+
 		zones[SHATTRATH_THUNDERBLUFF_PORTAL] = {
 			paths = Z["Thunder Bluff"],
 			type = "Transport",
 		}
-		
+
 		zones[SHATTRATH_UNDERCITY_PORTAL] = {
 			paths = Z["Undercity"],
 			type = "Transport",
 		}
-		
+
 		zones[Z["The Dark Portal"]] = {
 			paths = {
 				[Z["Blasted Lands"]] = true,
@@ -747,7 +747,7 @@ local function activate(self, oldLib, oldDeactivate)
 			type = "Transport",
 		}
 	end
-	
+
 	zones[UNDERCITY_GROMGOL_ZEPPELIN] = {
 		paths = {
 			[Z["Stranglethorn Vale"]] = true,
@@ -756,28 +756,28 @@ local function activate(self, oldLib, oldDeactivate)
 		faction = "Horde",
 		type = "Transport",
 	}
-	
+
 	zones[Z["Alterac Valley"]] = {
 		continent = Eastern_Kingdoms,
 		paths = Z["Alterac Mountains"],
 		groupSize = 40,
 		type = "Battleground",
 	}
-	
+
 	zones[Z["Arathi Basin"]] = {
 		continent = Eastern_Kingdoms,
 		paths = Z["Arathi Highlands"],
 		groupSize = 15,
 		type = "Battleground",
 	}
-	
+
 	zones[Z["Warsong Gulch"]] = {
 		continent = Kalimdor,
 		paths = isHorde and Z["The Barrens"] or Z["Ashenvale"],
 		groupSize = 10,
 		type = "Battleground",
 	}
-	
+
 	zones[Z["Deeprun Tram"]] = {
 		continent = Eastern_Kingdoms,
 		paths = {
@@ -786,7 +786,7 @@ local function activate(self, oldLib, oldDeactivate)
 		},
 		faction = "Alliance",
 	}
-	
+
 	zones[Z["Ironforge"]] = {
 		continent = Eastern_Kingdoms,
 		instances = Z["Gnomeregan"],
@@ -797,7 +797,7 @@ local function activate(self, oldLib, oldDeactivate)
 		faction = "Alliance",
 		type = "City",
 	}
-	
+
 	if expansion then
 		zones[Z["Silvermoon City"]] = {
 			continent = Eastern_Kingdoms,
@@ -809,7 +809,7 @@ local function activate(self, oldLib, oldDeactivate)
 			type = "City",
 		}
 	end
-	
+
 	zones[Z["Stormwind City"]] = {
 		continent = Eastern_Kingdoms,
 		instances = Z["The Stockade"],
@@ -821,7 +821,7 @@ local function activate(self, oldLib, oldDeactivate)
 		faction = "Alliance",
 		type = "City",
 	}
-	
+
 	zones[Z["Undercity"]] = {
 		continent = Eastern_Kingdoms,
 		instances = Z["Scarlet Monastery"],
@@ -832,7 +832,7 @@ local function activate(self, oldLib, oldDeactivate)
 		faction = "Horde",
 		type = "City",
 	}
-	
+
 	zones[Z["Dun Morogh"]] = {
 		low = 1,
 		high = 10,
@@ -846,7 +846,7 @@ local function activate(self, oldLib, oldDeactivate)
 		},
 		faction = "Alliance",
 	}
-	
+
 	zones[Z["Elwynn Forest"]] = {
 		low = 1,
 		high = 10,
@@ -860,7 +860,7 @@ local function activate(self, oldLib, oldDeactivate)
 		},
 		faction = "Alliance",
 	}
-	
+
 	if expansion then
 		zones[Z["Eversong Woods"]] = {
 			low = 1,
@@ -873,7 +873,7 @@ local function activate(self, oldLib, oldDeactivate)
 			faction = "Horde",
 		}
 	end
-	
+
 	zones[Z["Tirisfal Glades"]] = {
 		low = 1,
 		high = 10,
@@ -889,7 +889,7 @@ local function activate(self, oldLib, oldDeactivate)
 		},
 		faction = "Horde",
 	}
-	
+
 	if expansion then
 		zones[Z["Ghostlands"]] = {
 			low = 10,
@@ -904,7 +904,7 @@ local function activate(self, oldLib, oldDeactivate)
 			faction = "Horde",
 		}
 	end
-	
+
 	zones[Z["Loch Modan"]] = {
 		low = 10,
 		high = 20,
@@ -917,7 +917,7 @@ local function activate(self, oldLib, oldDeactivate)
 		},
 		faction = "Alliance",
 	}
-	
+
 	zones[Z["Silverpine Forest"]] = {
 		low = 10,
 		high = 20,
@@ -930,7 +930,7 @@ local function activate(self, oldLib, oldDeactivate)
 		},
 		faction = "Horde",
 	}
-	
+
 	zones[Z["Westfall"]] = {
 		low = 10,
 		high = 20,
@@ -943,7 +943,7 @@ local function activate(self, oldLib, oldDeactivate)
 		},
 		faction = "Alliance",
 	}
-	
+
 	zones[Z["Redridge Mountains"]] = {
 		low = 15,
 		high = 25,
@@ -954,7 +954,7 @@ local function activate(self, oldLib, oldDeactivate)
 			[Z["Duskwood"]] = true,
 		},
 	}
-	
+
 	zones[Z["Duskwood"]] = {
 		low = 18,
 		high = 30,
@@ -967,7 +967,7 @@ local function activate(self, oldLib, oldDeactivate)
 			[Z["Elwynn Forest"]] = true,
 		},
 	}
-	
+
 	zones[Z["Hillsbrad Foothills"]] = {
 		low = 20,
 		high = 30,
@@ -979,7 +979,7 @@ local function activate(self, oldLib, oldDeactivate)
 			[Z["Silverpine Forest"]] = true,
 		},
 	}
-	
+
 	zones[Z["Wetlands"]] = {
 		low = 20,
 		high = 30,
@@ -992,7 +992,7 @@ local function activate(self, oldLib, oldDeactivate)
 			[Z["Loch Modan"]] = true,
 		},
 	}
-	
+
 	zones[Z["Alterac Mountains"]] = {
 		low = 30,
 		high = 40,
@@ -1004,7 +1004,7 @@ local function activate(self, oldLib, oldDeactivate)
 			[Z["Hillsbrad Foothills"]] = true,
 		},
 	}
-	
+
 	zones[Z["Arathi Highlands"]] = {
 		low = 30,
 		high = 40,
@@ -1016,7 +1016,7 @@ local function activate(self, oldLib, oldDeactivate)
 			[Z["Arathi Basin"]] = true,
 		},
 	}
-	
+
 	zones[Z["Stranglethorn Vale"]] = {
 		low = 30,
 		high = 45,
@@ -1030,7 +1030,7 @@ local function activate(self, oldLib, oldDeactivate)
 			[UNDERCITY_GROMGOL_ZEPPELIN] = true,
 		},
 	}
-	
+
 	zones[Z["Badlands"]] = {
 		low = 35,
 		high = 45,
@@ -1042,7 +1042,7 @@ local function activate(self, oldLib, oldDeactivate)
 			[Z["Loch Modan"]] = true,
 		},
 	}
-	
+
 	zones[Z["Swamp of Sorrows"]] = {
 		low = 35,
 		high = 45,
@@ -1054,7 +1054,7 @@ local function activate(self, oldLib, oldDeactivate)
 			[Z["The Temple of Atal'Hakkar"]] = true,
 		},
 	}
-	
+
 	zones[Z["The Hinterlands"]] = {
 		low = 40,
 		high = 50,
@@ -1064,7 +1064,7 @@ local function activate(self, oldLib, oldDeactivate)
 			[Z["Western Plaguelands"]] = true,
 		},
 	}
-	
+
 	zones[Z["Searing Gorge"]] = {
 		low = 43,
 		high = 50,
@@ -1081,7 +1081,7 @@ local function activate(self, oldLib, oldDeactivate)
 			[Z["Loch Modan"]] = not isHorde and true or nil,
 		},
 	}
-	
+
 	zones[Z["Blackrock Mountain"]] = {
 		low = 42,
 		high = 54,
@@ -1101,7 +1101,7 @@ local function activate(self, oldLib, oldDeactivate)
 			[Z["Blackrock Spire"]] = true,
 		},
 	}
-	
+
 	zones[Z["Deadwind Pass"]] = {
 		low = 55,
 		high = 60,
@@ -1113,7 +1113,7 @@ local function activate(self, oldLib, oldDeactivate)
 			[Z["Karazhan"]] = expansion and true or nil,
 		},
 	}
-	
+
 	zones[Z["Blasted Lands"]] = {
 		low = 45,
 		high = 55,
@@ -1123,7 +1123,7 @@ local function activate(self, oldLib, oldDeactivate)
 			[Z["Swamp of Sorrows"]] = true,
 		},
 	}
-	
+
 	zones[Z["Burning Steppes"]] = {
 		low = 50,
 		high = 58,
@@ -1139,7 +1139,7 @@ local function activate(self, oldLib, oldDeactivate)
 			[Z["Redridge Mountains"]] = true,
 		},
 	}
-	
+
 	zones[Z["Western Plaguelands"]] = {
 		low = 51,
 		high = 58,
@@ -1153,7 +1153,7 @@ local function activate(self, oldLib, oldDeactivate)
 			[Z["Alterac Mountains"]] = true,
 		},
 	}
-	
+
 	zones[Z["Eastern Plaguelands"]] = {
 		low = 53,
 		high = 60,
@@ -1169,7 +1169,7 @@ local function activate(self, oldLib, oldDeactivate)
 			[Z["Ghostlands"]] = expansion and true or nil,
 		},
 	}
-	
+
 	zones[Z["The Deadmines"]] = {
 		low = isWestern and 17 or 15,
 		high = isWestern and 26 or 20,
@@ -1179,7 +1179,7 @@ local function activate(self, oldLib, oldDeactivate)
 		faction = "Alliance",
 		type = "Instance",
 	}
-	
+
 	zones[Z["Shadowfang Keep"]] = {
 		low = isWestern and 22 or 18,
 		high = isWestern and 30 or 25,
@@ -1189,7 +1189,7 @@ local function activate(self, oldLib, oldDeactivate)
 		faction = "Horde",
 		type = "Instance",
 	}
-	
+
 	zones[Z["The Stockade"]] = {
 		low = isWestern and 24 or 23,
 		high = isWestern and 32 or 26,
@@ -1199,7 +1199,7 @@ local function activate(self, oldLib, oldDeactivate)
 		faction = "Alliance",
 		type = "Instance",
 	}
-	
+
 	zones[Z["Gnomeregan"]] = {
 		low = isWestern and 29 or 24,
 		high = isWestern and 38 or 33,
@@ -1209,7 +1209,7 @@ local function activate(self, oldLib, oldDeactivate)
 		faction = "Alliance",
 		type = "Instance",
 	}
-	
+
 	zones[Z["Scarlet Monastery"]] = {
 		low = isWestern and 34 or 30,
 		high = isWestern and 45 or 40,
@@ -1219,7 +1219,7 @@ local function activate(self, oldLib, oldDeactivate)
 		faction = "Horde",
 		type = "Instance",
 	}
-	
+
 	zones[Z["Uldaman"]] = {
 		low = isWestern and 41 or 35,
 		high = isWestern and 51 or 45,
@@ -1228,7 +1228,7 @@ local function activate(self, oldLib, oldDeactivate)
 		groupSize = 5,
 		type = "Instance",
 	}
-	
+
 	zones[Z["The Temple of Atal'Hakkar"]] = {
 		low = isWestern and 50 or 44,
 		high = isWestern and 60 or 50,
@@ -1237,7 +1237,7 @@ local function activate(self, oldLib, oldDeactivate)
 		groupSize = 5,
 		type = "Instance",
 	}
-	
+
 	zones[Z["Blackrock Depths"]] = {
 		low = isWestern and 52 or 48,
 		high = isWestern and 60 or 56,
@@ -1249,7 +1249,7 @@ local function activate(self, oldLib, oldDeactivate)
 		groupSize = 5,
 		type = "Instance",
 	}
-	
+
 	zones[Z["Blackrock Spire"]] = {
 		low = isWestern and 55 or 53,
 		high = 60,
@@ -1261,7 +1261,7 @@ local function activate(self, oldLib, oldDeactivate)
 		groupSize = 10,
 		type = "Instance",
 	}
-	
+
 	zones[Z["Scholomance"]] = {
 		low = 58,
 		high = 60,
@@ -1270,7 +1270,7 @@ local function activate(self, oldLib, oldDeactivate)
 		groupSize = 5,
 		type = "Instance",
 	}
-	
+
 	zones[Z["Stratholme"]] = {
 		low = isWestern and 58 or 55,
 		high = 60,
@@ -1279,7 +1279,7 @@ local function activate(self, oldLib, oldDeactivate)
 		groupSize = 5,
 		type = "Instance",
 	}
-	
+
 	zones[Z["Blackwing Lair"]] = {
 		low = 60,
 		high = 62,
@@ -1288,7 +1288,7 @@ local function activate(self, oldLib, oldDeactivate)
 		groupSize = 40,
 		type = "Instance",
 	}
-	
+
 	zones[Z["Molten Core"]] = {
 		low = 60,
 		high = 62,
@@ -1297,7 +1297,7 @@ local function activate(self, oldLib, oldDeactivate)
 		groupSize = 40,
 		type = "Instance",
 	}
-	
+
 	zones[Z["Zul'Gurub"]] = {
 		low = 60,
 		high = 62,
@@ -1306,7 +1306,7 @@ local function activate(self, oldLib, oldDeactivate)
 		groupSize = 20,
 		type = "Instance",
 	}
-	
+
 	zones[Z["Naxxramas"]] = {
 		low = 60,
 		high = 70,
@@ -1314,7 +1314,7 @@ local function activate(self, oldLib, oldDeactivate)
 		groupSize = 40,
 		type = "Instance",
 	}
-	
+
 	if expansion then
 		zones[Z["Karazhan"]] = {
 			low = 70,
@@ -1325,7 +1325,7 @@ local function activate(self, oldLib, oldDeactivate)
 			type = "Instance",
 		}
 	end
-	
+
 	if expansion then
 		zones[Z["Zul'Aman"]] = {
 			low = 70,
@@ -1336,7 +1336,7 @@ local function activate(self, oldLib, oldDeactivate)
 			type = "Instance",
 		}
 	end
-	
+
 	zones[Z["Darnassus"]] = {
 		continent = Kalimdor,
 		paths = {
@@ -1346,11 +1346,11 @@ local function activate(self, oldLib, oldDeactivate)
 		faction = "Alliance",
 		type = "City",
 	}
-	
+
 	zones[Z["Hyjal"]] = {
 		continent = Kalimdor,
 	}
-	
+
 	zones[Z["Moonglade"]] = {
 		continent = Kalimdor,
 		paths = {
@@ -1358,7 +1358,7 @@ local function activate(self, oldLib, oldDeactivate)
 			[Z["Winterspring"]] = true,
 		},
 	}
-	
+
 	zones[Z["Orgrimmar"]] = {
 		continent = Kalimdor,
 		instances = Z["Ragefire Chasm"],
@@ -1369,7 +1369,7 @@ local function activate(self, oldLib, oldDeactivate)
 		faction = "Horde",
 		type = "City",
 	}
-	
+
 	if expansion then
 		zones[Z["The Exodar"]] = {
 			continent = Kalimdor,
@@ -1378,14 +1378,14 @@ local function activate(self, oldLib, oldDeactivate)
 			type = "City",
 		}
 	end
-	
+
 	zones[Z["Thunder Bluff"]] = {
 		continent = Kalimdor,
 		paths = Z["Mulgore"],
 		faction = "Horde",
 		type = "City",
 	}
-	
+
 	if expansion then
 		zones[Z["Azuremyst Isle"]] = {
 			low = 1,
@@ -1399,7 +1399,7 @@ local function activate(self, oldLib, oldDeactivate)
 			faction = "Alliance",
 		}
 	end
-	
+
 	zones[Z["Durotar"]] = {
 		low = 1,
 		high = 10,
@@ -1413,7 +1413,7 @@ local function activate(self, oldLib, oldDeactivate)
 		},
 		faction = "Horde",
 	}
-	
+
 	zones[Z["Mulgore"]] = {
 		low = 1,
 		high = 10,
@@ -1424,7 +1424,7 @@ local function activate(self, oldLib, oldDeactivate)
 		},
 		faction = "Horde",
 	}
-	
+
 	zones[Z["Teldrassil"]] = {
 		low = 1,
 		high = 10,
@@ -1432,7 +1432,7 @@ local function activate(self, oldLib, oldDeactivate)
 		paths = Z["Darnassus"],
 		faction = "Alliance",
 	}
-	
+
 	if expansion then
 		zones[Z["Bloodmyst Isle"]] = {
 			low = 10,
@@ -1444,7 +1444,7 @@ local function activate(self, oldLib, oldDeactivate)
 			faction = "Alliance",
 		}
 	end
-	
+
 	zones[Z["Darkshore"]] = {
 		low = 10,
 		high = 20,
@@ -1457,7 +1457,7 @@ local function activate(self, oldLib, oldDeactivate)
 		},
 		faction = "Alliance",
 	}
-	
+
 	zones[Z["The Barrens"]] = {
 		low = 10,
 		high = 25,
@@ -1483,7 +1483,7 @@ local function activate(self, oldLib, oldDeactivate)
 		},
 		faction = "Horde",
 	}
-	
+
 	zones[Z["Stonetalon Mountains"]] = {
 		low = 15,
 		high = 27,
@@ -1494,7 +1494,7 @@ local function activate(self, oldLib, oldDeactivate)
 			[Z["Ashenvale"]] = true,
 		},
 	}
-	
+
 	zones[Z["Ashenvale"]] = {
 		low = 18,
 		high = 30,
@@ -1513,7 +1513,7 @@ local function activate(self, oldLib, oldDeactivate)
 			[Z["Stonetalon Mountains"]] = true,
 		},
 	}
-	
+
 	zones[Z["Thousand Needles"]] = {
 		low = 25,
 		high = 35,
@@ -1524,7 +1524,7 @@ local function activate(self, oldLib, oldDeactivate)
 			[Z["Tanaris"]] = true,
 		},
 	}
-	
+
 	zones[Z["Desolace"]] = {
 		low = 30,
 		high = 40,
@@ -1536,7 +1536,7 @@ local function activate(self, oldLib, oldDeactivate)
 			[Z["Maraudon"]] = true,
 		},
 	}
-	
+
 	zones[Z["Dustwallow Marsh"]] = {
 		low = 35,
 		high = 45,
@@ -1548,7 +1548,7 @@ local function activate(self, oldLib, oldDeactivate)
 			[MENETHIL_THERAMORE_BOAT] = true,
 		},
 	}
-	
+
 	zones[Z["Feralas"]] = {
 		low = 40,
 		high = 50,
@@ -1560,7 +1560,7 @@ local function activate(self, oldLib, oldDeactivate)
 			[Z["Dire Maul"]] = true,
 		},
 	}
-	
+
 	zones[Z["Tanaris"]] = {
 		low = 40,
 		high = 50,
@@ -1576,14 +1576,14 @@ local function activate(self, oldLib, oldDeactivate)
 			[Z["Zul'Farrak"]] = true,
 		},
 	}
-	
+
 	zones[Z["Azshara"]] = {
 		low = 45,
 		high = 55,
 		continent = Kalimdor,
 		paths = Z["Ashenvale"],
 	}
-	
+
 	zones[Z["Felwood"]] = {
 		low = 48,
 		high = 55,
@@ -1594,7 +1594,7 @@ local function activate(self, oldLib, oldDeactivate)
 			[Z["Ashenvale"]] = true,
 		},
 	}
-	
+
 	zones[Z["Un'Goro Crater"]] = {
 		low = 48,
 		high = 55,
@@ -1604,7 +1604,7 @@ local function activate(self, oldLib, oldDeactivate)
 			[Z["Tanaris"]] = true,
 		},
 	}
-	
+
 	zones[Z["Silithus"]] = {
 		low = 55,
 		high = 60,
@@ -1619,7 +1619,7 @@ local function activate(self, oldLib, oldDeactivate)
 			[Z["Ahn'Qiraj"]] = true,
 		},
 	}
-	
+
 	zones[Z["Winterspring"]] = {
 		low = 55,
 		high = 60,
@@ -1629,7 +1629,7 @@ local function activate(self, oldLib, oldDeactivate)
 			[Z["Moonglade"]] = true,
 		},
 	}
-	
+
 	zones[Z["Ragefire Chasm"]] = {
 		low = 13,
 		high = isWestern and 18 or 15,
@@ -1639,7 +1639,7 @@ local function activate(self, oldLib, oldDeactivate)
 		faction = "Horde",
 		type = "Instance",
 	}
-	
+
 	zones[Z["Wailing Caverns"]] = {
 		low = isWestern and 17 or 15,
 		high = isWestern and 24 or 21,
@@ -1649,7 +1649,7 @@ local function activate(self, oldLib, oldDeactivate)
 		faction = "Horde",
 		type = "Instance",
 	}
-	
+
 	zones[Z["Blackfathom Deeps"]] = {
 		low = isWestern and 24 or 20,
 		high = isWestern and 32 or 27,
@@ -1658,7 +1658,7 @@ local function activate(self, oldLib, oldDeactivate)
 		groupSize = 5,
 		type = "Instance",
 	}
-	
+
 	zones[Z["Razorfen Kraul"]] = {
 		low = isWestern and 29 or 25,
 		high = isWestern and 38 or 35,
@@ -1667,7 +1667,7 @@ local function activate(self, oldLib, oldDeactivate)
 		groupSize = 5,
 		type = "Instance",
 	}
-	
+
 	zones[Z["Razorfen Downs"]] = {
 		low = isWestern and 37 or 35,
 		high = isWestern and 46 or 40,
@@ -1676,7 +1676,7 @@ local function activate(self, oldLib, oldDeactivate)
 		groupSize = 5,
 		type = "Instance",
 	}
-	
+
 	zones[Z["Zul'Farrak"]] = {
 		low = isWestern and 44 or 43,
 		high = isWestern and 54 or 47,
@@ -1685,7 +1685,7 @@ local function activate(self, oldLib, oldDeactivate)
 		groupSize = 5,
 		type = "Instance",
 	}
-	
+
 	zones[Z["Maraudon"]] = {
 		low = isWestern and 46 or 40,
 		high = isWestern and 55 or 49,
@@ -1694,7 +1694,7 @@ local function activate(self, oldLib, oldDeactivate)
 		groupSize = 5,
 		type = "Instance",
 	}
-	
+
 	zones[Z["Dire Maul"]] = {
 		low = 56,
 		high = 60,
@@ -1703,7 +1703,7 @@ local function activate(self, oldLib, oldDeactivate)
 		groupSize = 5,
 		type = "Instance",
 	}
-	
+
 	zones[Z["Onyxia's Lair"]] = {
 		low = 60,
 		high = 62,
@@ -1712,7 +1712,7 @@ local function activate(self, oldLib, oldDeactivate)
 		groupSize = 40,
 		type = "Instance",
 	}
-	
+
 	zones[Z["Ahn'Qiraj"]] = {
 		low = 60,
 		high = 65,
@@ -1721,7 +1721,7 @@ local function activate(self, oldLib, oldDeactivate)
 		groupSize = 40,
 		type = "Instance",
 	}
-	
+
 	zones[Z["Ruins of Ahn'Qiraj"]] = {
 		low = 60,
 		high = 65,
@@ -1730,7 +1730,7 @@ local function activate(self, oldLib, oldDeactivate)
 		groupSize = 20,
 		type = "Instance",
 	}
-	
+
 	if expansion then
 		zones[Z["Caverns of Time"]] = {
 			-- XXX Need to add the different instances;
@@ -1745,7 +1745,7 @@ local function activate(self, oldLib, oldDeactivate)
 			type = "Instance",
 		}
 	end
-	
+
 	if expansion then
 		zones[Z["Shattrath City"]] = {
 			continent = Outland,
@@ -1763,7 +1763,7 @@ local function activate(self, oldLib, oldDeactivate)
 			},
 			type = "City",
 		}
-		
+
 		zones[Z["Hellfire Citadel"]] = {
 			continent = Outland,
 			instances = {
@@ -1780,7 +1780,7 @@ local function activate(self, oldLib, oldDeactivate)
 				[Z["The Shattered Halls"]] = true,
 			}
 		}
-		
+
 		zones[Z["Hellfire Peninsula"]] = {
 			low = 58,
 			high = 63,
@@ -1798,7 +1798,7 @@ local function activate(self, oldLib, oldDeactivate)
 				[Z["Hellfire Citadel"]] = true,
 			},
 		}
-		
+
 		zones[Z["Coilfang Reservoir"]] = {
 			continent = Outland,
 			instances = {
@@ -1815,7 +1815,7 @@ local function activate(self, oldLib, oldDeactivate)
 				[Z["The Slave Pens"]] = true,
 			},
 		}
-		
+
 		zones[Z["Zangarmarsh"]] = {
 			low = 60,
 			high = 64,
@@ -1834,7 +1834,7 @@ local function activate(self, oldLib, oldDeactivate)
 				[Z["Hellfire Peninsula"]] = true,
 			},
 		}
-		
+
 		zones[Z["The Bone Wastes"]] = {
 			continent = Outland,
 			instances = {
@@ -1851,7 +1851,7 @@ local function activate(self, oldLib, oldDeactivate)
 				[Z["Auchenai Crypts"]] = true,
 			},
 		}
-		
+
 		zones[Z["Terokkar Forest"]] = {
 			low = 62,
 			high = 65,
@@ -1871,7 +1871,7 @@ local function activate(self, oldLib, oldDeactivate)
 				[Z["Nagrand"]] = true,
 			},
 		}
-		
+
 		zones[Z["Nagrand"]] = {
 			low = 64,
 			high = 67,
@@ -1882,7 +1882,7 @@ local function activate(self, oldLib, oldDeactivate)
 				[Z["Terokkar Forest"]] = true,
 			},
 		}
-		
+
 		zones[Z["Blade's Edge Mountains"]] = {
 			low = 65,
 			high = 68,
@@ -1893,7 +1893,7 @@ local function activate(self, oldLib, oldDeactivate)
 				[Z["Zangarmarsh"]] = true,
 			},
 		}
-		
+
 		zones[Z["Tempest Keep"]] = {
 			continent = Outland,
 			instances = {
@@ -1910,7 +1910,7 @@ local function activate(self, oldLib, oldDeactivate)
 				[Z["The Arcatraz"]] = true,
 			},
 		}
-		
+
 		zones[Z["Netherstorm"]] = {
 			low = 67,
 			high = 70,
@@ -1926,7 +1926,7 @@ local function activate(self, oldLib, oldDeactivate)
 				[Z["Blade's Edge Mountains"]] = true,
 			},
 		}
-		
+
 		zones[Z["Shadowmoon Valley"]] = {
 			low = 67,
 			high = 70,
@@ -1934,7 +1934,7 @@ local function activate(self, oldLib, oldDeactivate)
 			instances = Z["Black Temple"],
 			paths = Z["Terokkar Forest"],
 		}
-		
+
 		zones[Z["Black Temple"]] = {
 			low = 70,
 			high = 70,
@@ -1943,7 +1943,7 @@ local function activate(self, oldLib, oldDeactivate)
 			groupSize = 25,
 			type = "Instance",
 		}
-		
+
 		zones[Z["Auchenai Crypts"]] = {
 			low = 64,
 			high = 66,
@@ -1952,7 +1952,7 @@ local function activate(self, oldLib, oldDeactivate)
 			groupSize = 5,
 			type = "Instance",
 		}
-		
+
 		zones[Z["Auchenai Crypts"]] = {
 			low = 64,
 			high = 66,
@@ -1961,7 +1961,7 @@ local function activate(self, oldLib, oldDeactivate)
 			groupSize = 5,
 			type = "Instance",
 		}
-		
+
 		zones[Z["Shadow Labyrinth"]] = {
 			low = 65,
 			high = 67,
@@ -1970,7 +1970,7 @@ local function activate(self, oldLib, oldDeactivate)
 			groupSize = 5,
 			type = "Instance",
 		}
-		
+
 		zones[Z["Sethekk Halls"]] = {
 			low = 67,
 			high = 69,
@@ -1979,7 +1979,7 @@ local function activate(self, oldLib, oldDeactivate)
 			groupSize = 5,
 			type = "Instance",
 		}
-		
+
 		zones[Z["Mana-Tombs"]] = {
 			low = 70,
 			high = 72,
@@ -1988,7 +1988,7 @@ local function activate(self, oldLib, oldDeactivate)
 			groupSize = 5,
 			type = "Instance",
 		}
-		
+
 		zones[Z["Hellfire Ramparts"]] = {
 			low = 60,
 			high = 62,
@@ -1997,7 +1997,7 @@ local function activate(self, oldLib, oldDeactivate)
 			groupSize = 5,
 			type = "Instance",
 		}
-		
+
 		zones[Z["The Blood Furnace"]] = {
 			low = 61,
 			high = 63,
@@ -2006,7 +2006,7 @@ local function activate(self, oldLib, oldDeactivate)
 			groupSize = 5,
 			type = "Instance",
 		}
-		
+
 		zones[Z["The Shattered Halls"]] = {
 			low = 70,
 			high = 72,
@@ -2015,7 +2015,7 @@ local function activate(self, oldLib, oldDeactivate)
 			groupSize = 5,
 			type = "Instance",
 		}
-		
+
 		zones[Z["Magtheridon's Lair"]] = {
 			low = 70,
 			high = 70,
@@ -2024,7 +2024,7 @@ local function activate(self, oldLib, oldDeactivate)
 			groupSize = 25,
 			type = "Instance",
 		}
-		
+
 		zones[Z["The Slave Pens"]] = {
 			low = 62,
 			high = 64,
@@ -2033,7 +2033,7 @@ local function activate(self, oldLib, oldDeactivate)
 			groupSize = 5,
 			type = "Instance",
 		}
-		
+
 		zones[Z["The Underbog"]] = {
 			low = 63,
 			high = 65,
@@ -2042,7 +2042,7 @@ local function activate(self, oldLib, oldDeactivate)
 			groupSize = 5,
 			type = "Instance",
 		}
-		
+
 		zones[Z["The Steamvault"]] = {
 			low = 70,
 			high = 72,
@@ -2051,7 +2051,7 @@ local function activate(self, oldLib, oldDeactivate)
 			groupSize = 5,
 			type = "Instance",
 		}
-		
+
 		zones[Z["Serpentshrine Cavern"]] = {
 			low = 70,
 			high = 70,
@@ -2060,7 +2060,7 @@ local function activate(self, oldLib, oldDeactivate)
 			groupSize = 25,
 			type = "Instance",
 		}
-		
+
 		zones[Z["Gruul's Lair"]] = {
 			low = 70,
 			high = 70,
@@ -2069,7 +2069,7 @@ local function activate(self, oldLib, oldDeactivate)
 			groupSize = 25,
 			type = "Instance",
 		}
-		
+
 		zones[Z["The Mechanar"]] = {
 			low = 69,
 			high = 72,
@@ -2078,7 +2078,7 @@ local function activate(self, oldLib, oldDeactivate)
 			groupSize = 5,
 			type = "Instance",
 		}
-		
+
 		zones[Z["The Botanica"]] = {
 			low = 70,
 			high = 72,
@@ -2087,7 +2087,7 @@ local function activate(self, oldLib, oldDeactivate)
 			groupSize = 5,
 			type = "Instance",
 		}
-		
+
 		zones[Z["The Arcatraz"]] = {
 			low = 70,
 			high = 72,
@@ -2096,7 +2096,7 @@ local function activate(self, oldLib, oldDeactivate)
 			groupSize = 5,
 			type = "Instance",
 		}
-		
+
 		zones[Z["Eye of the Storm"]] = {
 			low = 70,
 			high = 70,
@@ -2106,7 +2106,7 @@ local function activate(self, oldLib, oldDeactivate)
 			type = "Instance",
 		}
 	end
-	
+
 	for k,v in pairs(zones) do
 		lows[k] = v.low or 0
 		highs[k] = v.high or 0
@@ -2117,9 +2117,9 @@ local function activate(self, oldLib, oldDeactivate)
 		groupSizes[k] = v.groupSize
 		factions[k] = v.faction
 	end
-	
+
 	PLAYER_LEVEL_UP(self)
-	
+
 	if oldDeactivate then
 		oldDeactivate(oldLib)
 	end
@@ -2222,7 +2222,7 @@ local function external(self, major, instance)
 							else
 								text = "    |cffffff00" .. zone .. "|r"
 							end
-							
+
 							local low, high = self:GetLevel(zone)
 							if low > 0 then
 								local r, g, b = self:GetLevelColor(zone)
@@ -2232,7 +2232,7 @@ local function external(self, major, instance)
 									text = text .. string.format(" (|cff%02x%02x%02x%d-%d|r)", r * 255, g * 255, b * 255, low, high)
 								end
 							end
-							
+
 							if zone == destination then
 								print(text)
 							else

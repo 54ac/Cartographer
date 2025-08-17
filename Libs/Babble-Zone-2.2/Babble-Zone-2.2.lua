@@ -126,16 +126,16 @@ BabbleZone:RegisterTranslations("enUS", function()
 		["Winterspring"] = true,
 		["Zul'Farrak"] = true,
 		["Zul'Gurub"] = true,
-		
+
 		-- Burning Crusade
-		
+
 		-- Subzones used for displaying instances.
 		["Plaguewood"] = true,
 		["Hellfire Citadel"] = true,
 		["Auchindoun"] = true,
 		["The Bone Wastes"] = true, -- Substitute for Auchindoun, since this is what shows on the minimap.
 		["Coilfang Reservoir"] = true, -- Not used yet.
-		
+
 		["Azuremyst Isle"] = true,
 		["Bloodmyst Isle"] = true,
 		["Eversong Woods"] = true,
@@ -284,16 +284,16 @@ BabbleZone:RegisterTranslations("ruRU", function()
 		["Winterspring"] = "Зимние Ключи",
 		["Zul'Farrak"] = "Зул'Фаррак",
 		["Zul'Gurub"] = "Зул'Гуруб",
-		
+
 		-- Burning Crusade
-		
+
 		-- Subzones used for displaying instances.
 		["Plaguewood"] = "Проклятый лес",
 		["Hellfire Citadel"] = "Цитадель Адского Пламени",
 		["Auchindoun"] = "Аукиндон",
 		["The Bone Wastes"] = "Костяные пустоши", -- Substitute for Auchindoun, since this is what shows on the minimap.
 		["Coilfang Reservoir"] = "Резервуар Кривого Клыка", -- Not used yet.
-		
+
 		["Azuremyst Isle"] = "Остров Лазурной Дымки",
 		["Bloodmyst Isle"] = "Остров Кровавой Дымки",
 		["Eversong Woods"] = "Леса Вечной Песни",
@@ -433,16 +433,16 @@ BabbleZone:RegisterTranslations("deDE", function()
 		["Winterspring"] = "Winterspring",
 		["Zul'Farrak"] = "Zul'Farrak",
 		["Zul'Gurub"] = "Zul'Gurub",
-		
+
 		-- Burning Crusade
-		
+
 		-- Subzones used for displaying instances.
 		["Plaguewood"] = "Seuchenwald",
 		["Hellfire Citadel"] = "H\195\182llenfeuerzitadelle",
 		["Auchindoun"] = "Auchindoun",
 		["The Bone Wastes"] = "Die Knochen-Vergeudungen", -- Substitute for Auchindoun, since this is what shows on the minimap.
 		["Coilfang Reservoir"] = "Spulenrei\195\159zahn Reservat",
-		
+
 		["Azuremyst Isle"] = "Azurmythosinsel",
 		["Bloodmyst Isle"] = "Blutmythosinsel",
 		["Eversong Woods"] = "Immersangwald",
@@ -581,16 +581,16 @@ BabbleZone:RegisterTranslations("frFR", function()
 		["Winterspring"] = "Berceau-de-l'Hiver (Winterspring)",
 		["Zul'Farrak"] = "Zul'Farrak",
 		["Zul'Gurub"] = "Zul'Gurub",
-		
+
 		-- Burning Crusade
-		
+
 		-- Subzones used for displaying instances.
 		--["Plaguewood"] = true,
 		["Hellfire Citadel"] = "Citadelle des Flammes infernales",
 		["Auchindoun"] = "Auchindoun",
 		--["The Bone Wastes"] = true, -- Substitute for Auchindoun, since this is what shows on the minimap.
 		["Coilfang Reservoir"] = "R\195\169servoir de Glissecroc", -- Not used yet.
-		
+
 		["Azuremyst Isle"] = "Ile de Brume-azure",
 		["Bloodmyst Isle"] = "Ile de Brume-sang",
 		["Eversong Woods"] = "Bois des Chants \195\169ternels",
@@ -729,12 +729,12 @@ BabbleZone:RegisterTranslations("zhCN", function()
 		["Winterspring"] = "冬泉谷",
 		["Zul'Farrak"] = "祖尔法拉克",
 		["Zul'Gurub"] = "祖尔格拉布",
-		
+
 		["Plaguewood"] = "病木林",
 		--		["Auchindoun"] = true,
 		--		["The Bone Wastes"] = true,
 		--		["Coilfang Reservoir"] = true,
-		
+
 		--		["Auchenai Crypts"] = true,
 		--		["Mana-Tombs"] = true,
 		--		["Shadow Labyrinth"] = true,
@@ -754,7 +754,7 @@ BabbleZone:RegisterTranslations("zhCN", function()
 		--		["The Botanica"] = true,
 		--		["The Arcatraz"] = true,
 		--		["Eye of the Storm"] = true,
-		
+
 		-- Burning Crusade
 		["Azuremyst Isle"] = "秘蓝岛", --some of the following tranlation need to checked after the release
 		["Bloodmyst Isle"] = "秘血岛",
@@ -881,12 +881,12 @@ BabbleZone:RegisterTranslations("zhTW", function()
 		["Winterspring"] = "冬泉谷",
 		["Zul'Farrak"] = "祖爾法拉克",
 		["Zul'Gurub"] = "祖爾格拉布",
-		
+
 		["Plaguewood"] = "病木林",
 		--		["Auchindoun"] = true,
 		--		["The Bone Wastes"] = true,
 		--		["Coilfang Reservoir"] = true,
-		
+
 		--		["Auchenai Crypts"] = true,
 		--		["Mana-Tombs"] = true,
 		--		["Shadow Labyrinth"] = true,
@@ -906,7 +906,7 @@ BabbleZone:RegisterTranslations("zhTW", function()
 		--		["The Botanica"] = true,
 		--		["The Arcatraz"] = true,
 		--		["Eye of the Storm"] = true,
-		
+
 		-- Burning Crusade
 		["Azuremyst Isle"] = "秘藍島",
 		["Bloodmyst Isle"] = "秘血島",
@@ -991,9 +991,9 @@ BabbleZone:RegisterTranslations("koKR", function()
 		["Menethil Harbor"] = "메네실 항구",
 		["Molten Core"] = "화산 심장부",
 		["Moonglade"] = "달의 숲",
-		["Mulgore"] = "멀고어",		
+		["Mulgore"] = "멀고어",
 		["Naxxramas"] = "낙스라마스",
-		["Onyxia's Lair"] = "오닉시아의 둥지",		
+		["Onyxia's Lair"] = "오닉시아의 둥지",
 		["Orgrimmar"] = "오그리마",
 		["Ratchet"] = "톱니항",
 		["Ragefire Chasm"] = "성난 불길협곡",
@@ -1033,16 +1033,16 @@ BabbleZone:RegisterTranslations("koKR", function()
 		["Winterspring"] = "여명의 설원",
 		["Zul'Farrak"] = "줄파락",
 		["Zul'Gurub"] = "줄구룹",
-		
+
 		-- Burning Crusade
-		
+
 		-- Subzones used for displaying instances.
 		["Plaguewood"] = "Plaguewood", -- check
 		["Hellfire Citadel"] = "지옥불 성채",
 		["Auchindoun"] = "아킨둔",
 		["The Bone Wastes"] = "해골 무덤", -- Substitute for Auchindoun, since this is what shows on the minimap.
 		["Coilfang Reservoir"] = "갈퀴송곳니 저수지",
-		
+
 		["Azuremyst Isle"] = "하늘안개 섬",
 		["Bloodmyst Isle"] = "핏빛안개 섬",
 		["Eversong Woods"] = "영원노래 숲",
