@@ -14,7 +14,7 @@ local L = AceLibrary("AceLocale-2.2"):new("Cartographer-Foglight")
 L:RegisterTranslations("enUS", function() return {
 	["Foglight"] = true,
 	["Module to show unexplored areas on the map."] = true,
-	
+
 	["Unexplored color"] = true,
 	["Change the color of the unexplored areas"] = true,
 } end)
@@ -22,7 +22,7 @@ L:RegisterTranslations("enUS", function() return {
 L:RegisterTranslations("ruRU", function() return {
 	["Foglight"] = "Противотуман",
 	["Module to show unexplored areas on the map."] = "Модуль отображает неисследованные территории на карте.",
-	
+
 	["Unexplored color"] = "Цвет тумана",
 	["Change the color of the unexplored areas"] = "Изменить цвет неисследованных территорий",
 } end)
@@ -30,7 +30,7 @@ L:RegisterTranslations("ruRU", function() return {
 L:RegisterTranslations("koKR", function() return {
 	["Foglight"] = "미 탐색 지역",
 	["Module to show unexplored areas on the map."] = "지도에 탐험하지 못한 지역을 보여줍니다.",
-	
+
 	["Unexplored color"] = "색상",
 	["Change the color of the unexplored areas"] = "탐험하지 못한 지역의 색상을 변경합니다.",
 } end)
@@ -663,10 +663,41 @@ function Cartographer_Foglight:OnInitialize()
 				["RUINSOFALTERAC"] = 211810516223,
 				["CORRAHNSDAGGER"] = 408440570051,
 			},
+			["ThalassianHighlands"] = {
+				["ALAHTHALAS"] = 268960512,
+				["RUINSOFNASHALARAN"] = 524800,
+			},
+			["Northwind"] = {
+				["MERCHANTSHIGHROAD"] = 275146867200,
+				["AMBERWOODKEEP"] = 274878169600,
+				["AMBERSHIRE"] = 275146605056,
+			},
+			["Gilneas"] = {
+				["THEGREYMANEWALL"] = 268698112,
+				["THEOVERGROWNACRE"] = 275146605056,
+				["NORTHGATETOWER"] = 268960256,
+				["THEDRYROCKPIT"] = 274878169600,
+				["SHADEMORETAVERN"] = 275146604800,
+				["THEDRYROCKMINE"] = 274878169600,
+				["BROLOKMOUND"] = 275146605056,
+				["HOLLOWWEBCEMETARY"] = 274878431744,
+				["STILLWARDCHURCH"] = 268960256,
+				["GILNEASCITY"] = 524800,
+				["OLDROCKPASS"] = 268697856,
+				["DAWNSTONEMINE"] = 268960000,
+				["RAVENWOODKEEP"] = 275146867200,
+				["RAVENSHIRE"] = 275146867200,
+				["ROSEWICKPLANTATION"] = 268960000,
+				["FREYSHEARKEEP"] = 275415040256,
+				["RUINSOFGREYSHIRE"] = 274878169600,
+				["SOUTHMIREORCHARD"] = 275146604800,
+				["HOLLOWWEBWOODS"] = 275146866944,
+				["GLAYMORESTEAD"] = 268698112,
+			},
 			['*'] = {}
 		}
 	})
-	
+
 	Cartographer.options.args.Foglight = {
 		name = L["Foglight"],
 		desc = L["Module to show unexplored areas on the map."],
@@ -731,15 +762,15 @@ function Cartographer_Foglight:WorldMapFrame_UpdateOverlays()
 	if not WorldMapFrame:IsShown() then
 		return
 	end
-	
+
 	local mapFileName, textureHeight = GetMapInfo()
 	if not mapFileName then
 		return
 	end
-	
+
 	local prefix = "Interface\\WorldMap\\"..mapFileName.."\\"
 	local zoneTable = self.overlayInfo[mapFileName]
-	
+
 	local numOverlays = self.hooks.GetNumMapOverlays()
 	local len = string.len(prefix)+1
 	for i=1, numOverlays do
@@ -749,13 +780,13 @@ function Cartographer_Foglight:WorldMapFrame_UpdateOverlays()
 		discovered[tname] = num
 		zoneTable[tname] = num
 	end
-	
+
 	local textureCount = 0
-	
+
 	for tname, num in pairs(zoneTable) do
 		local textureName = prefix .. tname
 		local textureWidth, textureHeight, offsetX, offsetY = math_mod(num, 1024), math_mod(math_floor(num / 1024), 1024), math_mod(math_floor(num / 1048576), 1024), math_floor(num / 1073741824)
-		
+
 		-- HACK: override *known incorrect* data with hard-coded fixes.
 		if textureName == "Interface\\WorldMap\\Tirisfal\\BRIGHTWATERLAKE" then
 			if offsetX == 587 then

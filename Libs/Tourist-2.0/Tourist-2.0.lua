@@ -1,6 +1,6 @@
 --[[
 	Name: Tourist-2.0
-	Revision: $Rev: 15758 $
+	Revision: $Rev: 15759 $
 	Author(s): ckknight (ckknight@gmail.com)
 	Website: http://ckknight.wowinterface.com/
 	Documentation: http://wiki.wowace.com/index.php/Tourist-2.0
@@ -10,7 +10,7 @@
 ]]
 
 local MAJOR_VERSION = "Tourist-2.0"
-local MINOR_VERSION = "$Revision: 15758 $"
+local MINOR_VERSION = "$Revision: 15759 $"
 
 if not AceLibrary then error(MAJOR_VERSION .. " requires AceLibrary") end
 if not AceLibrary:IsNewVersion(MAJOR_VERSION, MINOR_VERSION) then return end
@@ -23,7 +23,7 @@ local Z = AceLibrary("Babble-Zone-2.2")
 
 local playerLevel = 1
 local _,race = UnitRace("player")
-local isHorde = (race == "Orc" or race == "Troll" or race == "Tauren" or race == "Scourge" or race == "BloodElf")
+local isHorde = (race == "Orc" or race == "Troll" or race == "Tauren" or race == "Scourge" or race == "Goblin")
 local isWestern = GetLocale() == "enUS" or GetLocale() == "ruRU" or GetLocale() == "deDE" or GetLocale() == "frFR" or GetLocale() == "esES"
 local math_mod = math.fmod or math.mod
 
@@ -817,6 +817,7 @@ local function activate(self, oldLib, oldDeactivate)
 			[Z["Deeprun Tram"]] = true,
 			[Z["The Stockade"]] = true,
 			[Z["Elwynn Forest"]] = true,
+			[Z["Stormwind Vault"]] = true,
 		},
 		faction = "Alliance",
 		type = "City",
@@ -984,6 +985,7 @@ local function activate(self, oldLib, oldDeactivate)
 		low = 20,
 		high = 30,
 		continent = Eastern_Kingdoms,
+		instances = Z["Dragonmaw Retreat"],
 		paths = {
 			[Z["Arathi Highlands"]] = true,
 			[MENETHIL_AUBERDINE_BOAT] = true,
@@ -1106,11 +1108,14 @@ local function activate(self, oldLib, oldDeactivate)
 		low = 55,
 		high = 60,
 		continent = Eastern_Kingdoms,
-		instances = expansion and Z["Karazhan"] or nil,
+		instances = {
+			[Z["Karazhan Crypt"]] = true,
+			[Z["Lower Karazhan Halls"]] = true,
+			[Z["Tower of Karazhan"]] = true,
+		},
 		paths = {
 			[Z["Duskwood"]] = true,
 			[Z["Swamp of Sorrows"]] = true,
-			[Z["Karazhan"]] = expansion and true or nil,
 		},
 	}
 
@@ -1133,6 +1138,7 @@ local function activate(self, oldLib, oldDeactivate)
 			[Z["Blackwing Lair"]] = true,
 			[Z["Molten Core"]] = true,
 			[Z["Blackrock Spire"]] = true,
+			[Z["Hateforge Quarry"]] = true,
 		},
 		paths = {
 			[Z["Blackrock Mountain"]] = true,
@@ -1282,7 +1288,7 @@ local function activate(self, oldLib, oldDeactivate)
 
 	zones[Z["Blackwing Lair"]] = {
 		low = 60,
-		high = 62,
+		high = 60,
 		continent = Eastern_Kingdoms,
 		paths = Z["Blackrock Mountain"],
 		groupSize = 40,
@@ -1291,7 +1297,7 @@ local function activate(self, oldLib, oldDeactivate)
 
 	zones[Z["Molten Core"]] = {
 		low = 60,
-		high = 62,
+		high = 60,
 		continent = Eastern_Kingdoms,
 		paths = Z["Blackrock Mountain"],
 		groupSize = 40,
@@ -1300,7 +1306,7 @@ local function activate(self, oldLib, oldDeactivate)
 
 	zones[Z["Zul'Gurub"]] = {
 		low = 60,
-		high = 62,
+		high = 60,
 		continent = Eastern_Kingdoms,
 		paths = Z["Stranglethorn Vale"],
 		groupSize = 20,
@@ -1309,7 +1315,7 @@ local function activate(self, oldLib, oldDeactivate)
 
 	zones[Z["Naxxramas"]] = {
 		low = 60,
-		high = 70,
+		high = 60,
 		continent = Eastern_Kingdoms,
 		groupSize = 40,
 		type = "Instance",
@@ -1348,7 +1354,10 @@ local function activate(self, oldLib, oldDeactivate)
 	}
 
 	zones[Z["Hyjal"]] = {
+		low = 58,
+		high = 60,
 		continent = Kalimdor,
+		instances = Z["Emerald Sanctum"],
 	}
 
 	zones[Z["Moonglade"]] = {
@@ -1502,6 +1511,7 @@ local function activate(self, oldLib, oldDeactivate)
 		instances = {
 			[Z["Blackfathom Deeps"]] = true,
 			[Z["Warsong Gulch"]] = not isHorde and true or nil,
+			[Z["Crescent Grove"]] = true,
 		},
 		paths = {
 			[Z["Azshara"]] = true,
@@ -1706,7 +1716,7 @@ local function activate(self, oldLib, oldDeactivate)
 
 	zones[Z["Onyxia's Lair"]] = {
 		low = 60,
-		high = 62,
+		high = 60,
 		continent = Kalimdor,
 		paths = Z["Dustwallow Marsh"],
 		groupSize = 40,
@@ -1715,7 +1725,7 @@ local function activate(self, oldLib, oldDeactivate)
 
 	zones[Z["Ahn'Qiraj"]] = {
 		low = 60,
-		high = 65,
+		high = 60,
 		continent = Kalimdor,
 		paths = Z["Silithus"],
 		groupSize = 40,
@@ -1724,7 +1734,7 @@ local function activate(self, oldLib, oldDeactivate)
 
 	zones[Z["Ruins of Ahn'Qiraj"]] = {
 		low = 60,
-		high = 65,
+		high = 60,
 		continent = Kalimdor,
 		paths = Z["Silithus"],
 		groupSize = 20,
@@ -2106,6 +2116,190 @@ local function activate(self, oldLib, oldDeactivate)
 			type = "Instance",
 		}
 	end
+
+	-- Turtle WoW
+	zones[Z["Thalassian Highlands"]] = {
+		low = 1,
+		high = 10,
+		continent = Eastern_Kingdoms,
+		faction = "Alliance",
+	}
+
+	zones[Z["Alah'Thalas"]] = {
+		continent = Eastern_Kingdoms,
+		faction = "Alliance",
+		paths = Z["Thalassian Highlands"],
+		type = "City",
+	}
+
+	zones[Z["Blackstone Island"]] = {
+		low = 1,
+		high = 10,
+		continent = Kalimdor,
+		faction = "Horde",
+	}
+
+	zones[Z["Northwind"]] = {
+		low = 28,
+		high = 34,
+		continent = Eastern_Kingdoms,
+		faction = "Alliance",
+	}
+
+	zones[Z["Balor"]] = {
+		low = 29,
+		high = 34,
+		continent = Eastern_Kingdoms,
+		instances = Z["Stormwrought Ruins"],
+	}
+
+	zones[Z["Grim Reaches"]] = {
+		low = 33,
+		high = 38,
+		continent = Eastern_Kingdoms,
+	}
+
+	zones[Z["Gilneas"]] = {
+		low = 39,
+		high = 46,
+		continent = Eastern_Kingdoms,
+		instances = Z["Gilneas City"],
+	}
+
+	zones[Z["Icepoint Rock"]] = {
+		low = 40,
+		high = 50,
+		continent = Kalimdor,
+	}
+
+	zones[Z["Lapidis Isle"]] = {
+		low = 48,
+		high = 53,
+		continent = Eastern_Kingdoms,
+	}
+
+	zones[Z["Gillijim's Isle"]] = {
+		low = 48,
+		high = 53,
+		continent = Eastern_Kingdoms,
+	}
+
+	zones[Z["Tel'Abim"]] = {
+		low = 54,
+		high = 60,
+		continent = Kalimdor,
+	}
+
+	zones[Z["Scarlet Enclave"]] = {
+		low = 55,
+		high = 60,
+		continent = Eastern_Kingdoms,
+	}
+
+	zones[Z["Dragonmaw Retreat"]] = {
+		low = 26,
+		high = 35,
+		continent = Eastern_Kingdoms,
+		groupSize = 5,
+		type = "Instance",
+		paths = Z["Wetlands"],
+	}
+
+	zones[Z["Crescent Grove"]] = {
+		low = 34,
+		high = 39,
+		continent = Kalimdor,
+		groupSize = 5,
+		type = "Instance",
+		paths = Z["Ashenvale"],
+	}
+
+	zones[Z["Stormwrought Ruins"]] = {
+		low = 35,
+		high = 41,
+		continent = Eastern_Kingdoms,
+		groupSize = 5,
+		type = "Instance",
+		paths = Z["Balor"],
+	}
+
+	zones[Z["Gilneas City"]] = {
+		low = 43,
+		high = 49,
+		continent = Eastern_Kingdoms,
+		groupSize = 5,
+		type = "Instance",
+		paths = Z["Gilneas"],
+	}
+
+	zones[Z["Hateforge Quarry"]] = {
+		low = 48,
+		high = 56,
+		continent = Eastern_Kingdoms,
+		groupSize = 5,
+		type = "Instance",
+		paths = Z["Burning Steppes"],
+	}
+
+	zones[Z["Caverns of Time: Black Morass"]] = {
+		low = 60,
+		high = 60,
+		continent = Eastern_Kingdoms,
+		groupSize = 5,
+		type = "Instance",
+		paths = Z["Burning Steppes"],
+	}
+
+	zones[Z["Stormwind Vault"]] = {
+		low = 60,
+		high = 60,
+		continent = Eastern_Kingdoms,
+		groupSize = 5,
+		type = "Instance",
+		paths = Z["Stormwind City"],
+		faction = "Alliance",
+	}
+
+	zones[Z["Karazhan Crypt"]] = {
+		low = 60,
+		high = 60,
+		continent = Eastern_Kingdoms,
+		groupSize = 5,
+		type = "Instance",
+		paths = Z["Deadwind Pass"],
+	}
+
+	zones[Z["Lower Karazhan Halls"]] = {
+		low = 60,
+		high = 60,
+		continent = Eastern_Kingdoms,
+		groupSize = 10,
+		type = "Instance",
+		paths = Z["Deadwind Pass"],
+	}
+
+	zones[Z["Tower of Karazhan"]] = {
+		low = 60,
+		high = 60,
+		continent = Eastern_Kingdoms,
+		groupSize = 40,
+		type = "Instance",
+		paths = Z["Deadwind Pass"],
+	}
+
+	zones[Z["Emerald Sanctum"]] = {
+		low = 60,
+		high = 60,
+		continent = Kalimdor,
+		groupSize = 40,
+		type = "Instance",
+		paths = Z["Hyjal"],
+	}
+
+	zones[Z["Sunnyglade Valley"]] = {
+		groupSize = 10,
+		type = "Battleground",
+	}
 
 	for k,v in pairs(zones) do
 		lows[k] = v.low or 0

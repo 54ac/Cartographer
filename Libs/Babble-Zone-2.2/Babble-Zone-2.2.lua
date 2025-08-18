@@ -1,6 +1,6 @@
 --[[
 	Name: Babble-Zone-2.2
-	Revision: $Rev: 17780 $
+	Revision: $Rev: 17781 $
 	Author(s): ckknight (ckknight@gmail.com)
 	Website: http://ckknight.wowinterface.com/
 	Documentation: http://wiki.wowace.com/index.php/Babble-Zone-2.2
@@ -10,7 +10,7 @@
 ]]
 
 local MAJOR_VERSION = "Babble-Zone-2.2"
-local MINOR_VERSION = tonumber(string.sub("$Revision: 17780 $", 12, -3))
+local MINOR_VERSION = tonumber(string.sub("$Revision: 17781 $", 12, -3))
 
 if not AceLibrary then error(MAJOR_VERSION .. " requires AceLibrary") end
 
@@ -177,10 +177,34 @@ BabbleZone:RegisterTranslations("enUS", function()
 		-- Turtle WoW
 		["Amani'alor"] = true,
 		["Tel'Abim"] = true,
-		["Alah'thalas"] = true,
+		["Alah'Thalas"] = true,
 		["Lapidis Isle"] = true,
 		["Gillijim's Isle"] = true,
 		["Scarlet Enclave"] = true,
+		["Thalassian Highlands"] = true,
+		["Blackstone Island"] = true,
+		["Northwind"] = true,
+		["Balor"] = true,
+		["Grim Reaches"] = true,
+		["Gilneas"] = true,
+		["Icepoint Rock"] = true,
+		["Lapidis Isle"] = true,
+		["Tel'Abim"] = true,
+		["Scarlet Enclave"] = true,
+
+		["Dragonmaw Retreat"] = true,
+		["Crescent Grove"] = true,
+		["Stormwrought Ruins"] = true,
+		["Gilneas City"] = true,
+		["Hateforge Quarry"] = true,
+		["Caverns of Time: Black Morass"] = true,
+		["Stormwind Vault"] = true,
+		["Karazhan Crypt"] = true,
+		["Lower Karazhan Halls"] = true,
+		["Tower of Karazhan"] = true,
+		["Emerald Sanctum"] = true,
+
+		["Sunnyglade Valley"] = true,
 	}
 end)
 
