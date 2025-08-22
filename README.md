@@ -1,9 +1,17 @@
 # Cartographer for TurtleWoW
 
-Fork of vanilla **Cartographer** for 1.12.1 which adds compatibility with custom zones of TurtleWoW.
+Fork of vanilla **Cartographer** for 1.12.1 which adds compatibility with custom zones, instances, and battlegrounds of TurtleWoW as of patch 1.18.0 (Scars of the Past).
 
 ## Installation
+### Git Addons Manager
+1. Download [Git Addons Manager](https://turtle-wow.fandom.com/wiki/GitAddonsManager)
+2. Add this repo - `https://github.com/54ac/Cartographer.git`
 
+### Clone repository
+1. Navigate to your `/Interface/AddOns` folder
+2. Open a terminal window and clone the repo using the command `git clone https://github.com/54ac/Cartographer.git`
+
+### Manual installation
 1. Open `Code` dropdown menu (slightly to the top right)
 1. Select `Downloand as ZIP`
 1. Extract downloaded zip into `/Interface/AddOns`
