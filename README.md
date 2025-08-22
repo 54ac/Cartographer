@@ -8,13 +8,13 @@ Fork of vanilla **Cartographer** for 1.12.1 which adds compatibility with custom
 2. Add this repo - `https://github.com/54ac/Cartographer.git`
 
 ### Clone repository
-1. Navigate to your `/Interface/AddOns` folder
-2. Open a terminal window and clone the repo using the command `git clone https://github.com/54ac/Cartographer.git`
+1. Install [git](https://git-scm.com/downloads)
+2. Navigate to your `/Interface/AddOns` folder
+3. Open a terminal window and clone the repo using the command `git clone https://github.com/54ac/Cartographer.git`
 
 ### Manual installation
 1. Open `Code` dropdown menu (slightly to the top right)
-1. Select `Downloand as ZIP`
-1. Extract downloaded zip into `/Interface/AddOns`
-1. Rename folder to `Cartographer` from Cartographer-master
-
+2. Select `Downloand as ZIP`
+3. Extract downloaded zip into `/Interface/AddOns`
+4. Rename folder to `Cartographer` from Cartographer-master
 > Make sure that the extracted folder doesn't contain another folder with the same name!
