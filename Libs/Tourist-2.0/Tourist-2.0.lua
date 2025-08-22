@@ -812,7 +812,10 @@ local function activate(self, oldLib, oldDeactivate)
 
 	zones[Z["Stormwind City"]] = {
 		continent = Eastern_Kingdoms,
-		instances = Z["The Stockade"],
+		instances = {
+			[Z["The Stockade"]] = true,
+			[Z["Stormwind Vault"]] = true,
+		},
 		paths = {
 			[Z["Deeprun Tram"]] = true,
 			[Z["The Stockade"]] = true,
@@ -992,6 +995,7 @@ local function activate(self, oldLib, oldDeactivate)
 			[MENETHIL_THERAMORE_BOAT] = true,
 			[Z["Dun Morogh"]] = true,
 			[Z["Loch Modan"]] = true,
+			[Z["Dragonmaw Retreat"]] = true,
 		},
 	}
 

@@ -66,13 +66,14 @@ function Cartographer_Battlegrounds:OnInitialize()
 		},
 		handler = self,
 	}
-	
+
 	local validate = {
 		["Warsong Gulch"] = BZ["Warsong Gulch"],
 		["Arathi Basin"] = BZ["Arathi Basin"],
 		["Alterac Valley"] = BZ["Alterac Valley"],
+		["Sunnyglade Valley"] = BZ["Sunnyglade Valley"],
 	}
-	
+
 	Cartographer.gotoOptions.args.Battlegrounds = {
 		name = L["Battlegrounds"],
 		desc = L["Battlegrounds"],
@@ -111,6 +112,8 @@ function Cartographer_Battlegrounds:ShowBattleground(name)
 		name = "ArathiBasin"
 	elseif name == "Alterac Valley" then
 		name = "AlteracValley"
+	elseif name == "Sunnyglade Valley" then
+		name = "Sunnyglade"
 	else
 		error(string.format("Cannot show unknown battleground %q", name), 2)
 	end

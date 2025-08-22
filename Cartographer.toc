@@ -1,6 +1,6 @@
 ## Interface: 11200
 ## Title: Cartographer |cffcccccc[TurtleWoW] |cff7fff7f -Ace2-|r
-## Version: 2.0.2
+## Version: 2.0.3
 ## Notes: Addon to manipulate the map
 ## SavedVariables: CartographerDB
 ## OptionalDeps: Ace2, Babble-2.2, DewdropLib, TabletLib, TouristLib
@@ -31,13 +31,7 @@ Modules\Battlegrounds.lua
 Modules\Coordinates.lua
 Modules\Foglight.lua
 Modules\GroupColors.lua
-Modules\InstanceMaps.lua
 Modules\LookNFeel.lua
 Modules\Notes.lua
 Modules\Professions.lua
 Modules\ZoneInfo.lua
-Modules\InstanceNotes\enUS.lua
-Modules\InstanceNotes\ruRU.lua
-Modules\InstanceNotes\koKR.lua
-Modules\InstanceNotes\module.lua
-Modules\InstanceNotes\notes.lua

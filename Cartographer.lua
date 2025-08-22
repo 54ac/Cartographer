@@ -18,12 +18,12 @@ function GetCustomMapContinents() return unpack({ 'Kalimdor', 'Eastern Kingdoms'
 L:RegisterTranslations("enUS", function() return {
 	["Active"] = true,
 	["Suspend/resume this module."] = true,
-	
+
 	["Right-Click on map to zoom out"] = true,
 	["Left-Click on map to zoom in"] = true,
-	
+
 	["Go to %s"] = true,
-	
+
 	["Azeroth"] = true,
 	["Cosmic map"] = true,
 } end)
@@ -31,12 +31,12 @@ L:RegisterTranslations("enUS", function() return {
 L:RegisterTranslations("ruRU", function() return {
 	["Active"] = "Активен",
 	["Suspend/resume this module."] = "Отключить/Запустить данный модуль",
-	
+
 	["Right-Click on map to zoom out"] = "Правое нажатие по карте - уменьшение масштаба",
 	["Left-Click on map to zoom in"] = "Левое нажатие по карте - увеличение масштаба",
-	
+
 	["Go to %s"] = "Перейти на %s",
-	
+
 	["Azeroth"] = "Азерот",
 	["Cosmic map"] = "Карта космоса",
 } end)
@@ -54,12 +54,12 @@ L:RegisterTranslations("frFR", function() return {
 L:RegisterTranslations("koKR", function() return {
 	["Active"] = "활성화",
 	["Suspend/resume this module."] = "모듈을 켜거나 끔니다.",
-	
+
 	["Right-Click on map to zoom out"] = "오른쪽-클릭 : 축소",
 	["Left-Click on map to zoom in"] = "왼쪽-클릭 : 확대",
-	
+
 	["Go to %s"] = "%s 바로가기",
-	
+
 	["Azeroth"] = "아제로스",
 	["Cosmic map"] = "세계 지도",
 } end)
@@ -99,10 +99,67 @@ function Cartographer:OnInitialize()
 			}
 		},
 	}
-	
-	for i,continent in ipairs { GetCustomMapContinents() } do
-		local i = i
-		local validate = { GetMapZones(i) }
+
+	local continentInstances = {
+		-- Eastern Kingdoms
+		{
+			"The Deadmines",
+			"Shadowfang Keep",
+			"The Stockade",
+			"Gnomeregan",
+			"Scarlet Monastery",
+			"Uldaman",
+			"Zul'Gurub",
+			"Stratholme",
+			"Scholomance",
+			"Blackrock Depths",
+			"Blackrock Spire",
+			"Molten Core",
+			"Blackwing Lair"
+		},
+		-- Kalimdor
+		{
+			"Ragefire Chasm",
+			"Wailing Caverns",
+			"Razorfen Kraul",
+			"Razorfen Downs",
+			"Blackfathom Deeps",
+			"Maraudon",
+			"Dire Maul",
+			"Zul'Farrak",
+			"Onyxia's Lair",
+			"Ahn'Qiraj",
+			"Ruins of Ahn'Qiraj"
+		}
+	}
+
+	-- Turtle WoW built in instance maps
+	local mergedInstances = {}
+	local instanceIndices = {}
+	local addedInstances = {}
+
+	for i = 3, 64 do
+		local zones = { GetMapZones(i) }
+		for j, zone in ipairs(zones) do
+			if zone and not addedInstances[zone] then
+				table.insert(mergedInstances, zone)
+				instanceIndices[zone] = { continent = i, zone = j }
+				addedInstances[zone] = true
+			end
+		end
+	end
+	table.sort(mergedInstances)
+
+	-- Remove stray instances from continent zones
+	for i, continent in ipairs { GetCustomMapContinents() } do
+		local validate = {}
+		local zoneList = { GetMapZones(i) }
+		for j, v in ipairs(zoneList) do
+			if v and not addedInstances[v] then
+				table.insert(validate, v)
+			end
+		end
+
 		self.gotoOptions.args[string.gsub(continent, " ", "-")] = {
 			name = continent,
 			desc = continent,
@@ -119,7 +176,28 @@ function Cartographer:OnInitialize()
 			end,
 		}
 	end
-	
+
+	self.gotoOptions.args["instances"] = {
+		name = 'Instances',
+		desc = 'Instances',
+		type = 'text',
+		validate = mergedInstances,
+		get = function()
+			for zone, idx in pairs(instanceIndices) do
+				if idx.continent == GetCurrentMapContinent() and idx.zone == GetCurrentMapZone() then
+					return zone
+				end
+			end
+			return nil
+		end,
+		set = function(text)
+			local idx = instanceIndices[text]
+			if idx then
+				SetMapZoom(idx.continent, idx.zone)
+			end
+		end,
+	}
+
 	if not GetBindingAction("ALT-M") and not GetBindingKey("CARTOGRAPHER_OPENALTERNATEMAP") then
 		SetBinding("ALT-M", "CARTOGRAPHER_OPENALTERNATEMAP")
 	end
@@ -129,7 +207,7 @@ local magnifyingGlassTexts = { L["Right-Click on map to zoom out"], L["Left-Clic
 function Cartographer:OnEnable()
 	WorldMapContinentDropDown:Hide()
 	WorldMapZoneDropDown:Hide()
-	
+
 	local button = CreateFrame("Button", "CartographerOptionsButton", WorldMapFrame, "UIPanelButtonTemplate")
 	button:SetText("Cartographer")
 	local width = button:GetTextWidth() + 30
@@ -157,7 +235,7 @@ function Cartographer:OnEnable()
 		end)
 		this:GetScript("OnClick")()
 	end)
-	
+
 	local CartographerGoToButton = CreateFrame("Button", "CartographerGoToButton", WorldMapFrame, "UIPanelButtonTemplate")
 	CartographerGoToButton:SetText(UNKNOWN)
 	local width = CartographerGoToButton:GetTextWidth() + 30
@@ -184,14 +262,14 @@ function Cartographer:OnEnable()
 		end)
 		this:GetScript("OnClick")()
 	end)
-	
+
 	self:Hook(WorldMapFrame, "Hide", "WorldMapFrame_Hide", true)
 	self:Hook(WorldMapFrame, "Show", "WorldMapFrame_Show", true)
 	self:RegisterEvent("Cartographer_MapClosed")
 	self:RegisterEvent("Cartographer_ChangeZone")
 	self:RegisterEvent("WORLD_MAP_UPDATE")
 	self:Cartographer_ChangeZone(self:GetCurrentEnglishZoneName(), self:GetCurrentLocalizedZoneName())
-	
+
 	WorldMapMagnifyingGlassButton:SetText(table.concat(magnifyingGlassTexts, "\n"))
 end
 
@@ -266,7 +344,7 @@ function Cartographer:RemoveFromMagnifyingGlass(text)
 		error(string.format("Cannot remove %q from magnifying glass, it does not exist", text), 2)
 	end
 	table.remove(magnifyingGlassTexts, id)
-	
+
 	WorldMapMagnifyingGlassButton:SetText(table.concat(magnifyingGlassTexts, "\n"))
 end
 
@@ -346,7 +424,7 @@ function Cartographer:OpenAlternateMap()
 	if self:GetProfile() == "Default" or self:GetProfile() == "Alternate" then
 		self:SetProfile(self:GetProfile() == "Default" and "Alternate" or "Default")
 	end
-	
+
 	if not WorldMapFrame:IsShown() then
 		ToggleWorldMap()
 	end
