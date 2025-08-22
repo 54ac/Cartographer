@@ -12,9 +12,6 @@ local BZ = AceLibrary("Babble-Zone-2.2")
 BINDING_HEADER_CARTOGRAPHER = "Cartographer"
 BINDING_NAME_CARTOGRAPHER_OPENALTERNATEMAP = "Open alternate map"
 
--- Override continents list so they don't pollute map selection
-function GetCustomMapContinents() return unpack({ 'Kalimdor', 'Eastern Kingdoms' }) end
-
 L:RegisterTranslations("enUS", function() return {
 	["Active"] = true,
 	["Suspend/resume this module."] = true,
@@ -100,65 +97,86 @@ function Cartographer:OnInitialize()
 		},
 	}
 
-	local continentInstances = {
-		-- Eastern Kingdoms
-		{
-			"The Deadmines",
-			"Shadowfang Keep",
-			"The Stockade",
-			"Gnomeregan",
-			"Scarlet Monastery",
-			"Uldaman",
-			"Zul'Gurub",
-			"Stratholme",
-			"Scholomance",
-			"Blackrock Depths",
-			"Blackrock Spire",
-			"Molten Core",
-			"Blackwing Lair"
-		},
-		-- Kalimdor
-		{
-			"Ragefire Chasm",
-			"Wailing Caverns",
-			"Razorfen Kraul",
-			"Razorfen Downs",
-			"Blackfathom Deeps",
-			"Maraudon",
-			"Dire Maul",
-			"Zul'Farrak",
-			"Onyxia's Lair",
-			"Ahn'Qiraj",
-			"Ruins of Ahn'Qiraj"
-		}
-	}
+local easternKingdomsInstances = {
+	["Blackrock Depths"] = true,
+	["Blackrock Spire"] = true,
+	["Blackwing Lair"] = true,
+	["Dragonmaw Retreat"] = true,
+	["Gilneas City"] = true,
+	["Gnomeregan"] = true,
+	["Hateforge Quarry"] = true,
+	["Karazhan Crypt"] = true,
+	["Molten Core"] = true,
+	["Naxxramas"] = true,
+	["Scarlet Monastery Armory"] = true,
+	["Scarlet Monastery Cathedral"] = true,
+	["Scarlet Monastery Graveyard"] = true,
+	["Scarlet Monastery Library"] = true,
+	["Scholomance"] = true,
+	["Stormwind Vault"] = true,
+	["Stormwrought Ruins"] = true,
+	["Stratholme"] = true,
+	["The Deadmines"] = true,
+	["The Rock of Desolation"] = true,
+	["The Stockade"] = true,
+	["The Temple of Atal'Hakkar"] = true,
+	["The Upper Necropolis"] = true,
+	["Tower of Karazhan"] = true,
+	["Uldaman"] = true,
+	["Zul'Gurub"] = true,
+}
+
+local kalimdorInstances = {
+	["Ahn'Qiraj"] = true,
+	["Blackfathom Deeps"] = true,
+	["Crescent Grove"] = true,
+	["Dire Maul"] = true,
+	["Emerald Sanctum"] = true,
+	["Maraudon"] = true,
+	["Onyxia's Lair"] = true,
+	["Ragefire Chasm"] = true,
+	["Razorfen Downs"] = true,
+	["Razorfen Kraul"] = true,
+	["Ruins of Ahn'Qiraj"] = true,
+	["Shadowfang Keep"] = true,
+	["The Black Morass"] = true,
+	["Wailing Caverns"] = true,
+	["Zul'Farrak"] = true,
+}
 
 	-- Turtle WoW built in instance maps
-	local mergedInstances = {}
+	local mergedEasternKingdomsInstances = {}
+	local mergedKalimdorInstances = {}
+	local mergedOtherInstances = {}
 	local instanceIndices = {}
 	local addedInstances = {}
 
-	for i = 3, 64 do
+	-- 1 and 2 are the default continents
+	i = 3
+	repeat
 		local zones = { GetMapZones(i) }
 		for j, zone in ipairs(zones) do
 			if zone and not addedInstances[zone] then
-				table.insert(mergedInstances, zone)
+				if kalimdorInstances[zone] then
+					table.insert(mergedKalimdorInstances, zone)
+				elseif easternKingdomsInstances[zone] then
+					table.insert(mergedEasternKingdomsInstances, zone)
+				else
+					table.insert(mergedOtherInstances, zone)
+				end
 				instanceIndices[zone] = { continent = i, zone = j }
 				addedInstances[zone] = true
 			end
 		end
-	end
-	table.sort(mergedInstances)
+		i = i + 1
+	until (GetMapZones(i) == nil)
+	table.sort(mergedEasternKingdomsInstances)
+	table.sort(mergedKalimdorInstances)
+	table.sort(mergedOtherInstances)
 
-	-- Remove stray instances from continent zones
-	for i, continent in ipairs { GetCustomMapContinents() } do
-		local validate = {}
-		local zoneList = { GetMapZones(i) }
-		for j, v in ipairs(zoneList) do
-			if v and not addedInstances[v] then
-				table.insert(validate, v)
-			end
-		end
+	for i,continent in ipairs { GetMapContinents() } do
+		local i = i
+		local validate = { GetMapZones(i) }
 
 		self.gotoOptions.args[string.gsub(continent, " ", "-")] = {
 			name = continent,
@@ -177,11 +195,53 @@ function Cartographer:OnInitialize()
 		}
 	end
 
-	self.gotoOptions.args["instances"] = {
-		name = 'Instances',
-		desc = 'Instances',
+	self.gotoOptions.args["eastern-kingdoms-instances"] = {
+		name = 'Eastern Kingdoms - Instances',
+		desc = 'Eastern Kingdoms - Instances',
 		type = 'text',
-		validate = mergedInstances,
+		validate = mergedEasternKingdomsInstances,
+		get = function()
+			for zone, idx in pairs(instanceIndices) do
+				if idx.continent == GetCurrentMapContinent() and idx.zone == GetCurrentMapZone() then
+					return zone
+				end
+			end
+			return nil
+		end,
+		set = function(text)
+			local idx = instanceIndices[text]
+			if idx then
+				SetMapZoom(idx.continent, idx.zone)
+			end
+		end,
+	}
+
+	self.gotoOptions.args["kalimdor-instances"] = {
+		name = 'Kalimdor - Instances',
+		desc = 'Kalimdor - Instances',
+		type = 'text',
+		validate = mergedKalimdorInstances,
+		get = function()
+			for zone, idx in pairs(instanceIndices) do
+				if idx.continent == GetCurrentMapContinent() and idx.zone == GetCurrentMapZone() then
+					return zone
+				end
+			end
+			return nil
+		end,
+		set = function(text)
+			local idx = instanceIndices[text]
+			if idx then
+				SetMapZoom(idx.continent, idx.zone)
+			end
+		end,
+	}
+
+	self.gotoOptions.args["other"] = {
+		name = 'Other',
+		desc = 'Other',
+		type = 'text',
+		validate = mergedOtherInstances,
 		get = function()
 			for zone, idx in pairs(instanceIndices) do
 				if idx.continent == GetCurrentMapContinent() and idx.zone == GetCurrentMapZone() then
@@ -300,7 +360,7 @@ function Cartographer:Cartographer_MapClosed()
 	SetMapToCurrentZone()
 end
 
-local continents = { GetCustomMapContinents() }
+local continents = { GetMapContinents() }
 continents[0] = L["Azeroth"]
 continents[-1] = L["Cosmic map"]
 
