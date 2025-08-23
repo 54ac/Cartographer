@@ -196,8 +196,8 @@ local kalimdorInstances = {
 	end
 
 	self.gotoOptions.args["eastern-kingdoms-instances"] = {
-		name = 'Eastern Kingdoms - Instances',
-		desc = 'Eastern Kingdoms - Instances',
+		name =  BZ["Eastern Kingdoms"] .. " - Instances",
+		desc =  BZ["Eastern Kingdoms"] .. " - Instances",
 		type = 'text',
 		validate = mergedEasternKingdomsInstances,
 		get = function()
@@ -217,8 +217,8 @@ local kalimdorInstances = {
 	}
 
 	self.gotoOptions.args["kalimdor-instances"] = {
-		name = 'Kalimdor - Instances',
-		desc = 'Kalimdor - Instances',
+		name = BZ["Kalimdor"] .. " - Instances",
+		desc = BZ["Kalimdor"] .. " - Instances",
 		type = 'text',
 		validate = mergedKalimdorInstances,
 		get = function()
@@ -451,8 +451,8 @@ function Cartographer:GetCurrentLocalizedZoneName()
 			return BZ["Arathi Basin"]
 		elseif map == "AlteracValley" then
 			return BZ["Alterac Valley"]
-		elseif map == "NetherstormArena" then
-			return BZ["Eye of the Storm"]
+		elseif map == "Sunnyglade" then
+			return BZ["Sunnyglade Valley"]
 		end
 		return nil
 	end
@@ -464,7 +464,11 @@ function Cartographer:GetCurrentEnglishZoneName()
 	end
 	local z = mapZones[GetCurrentMapContinent()][GetCurrentMapZone()]
 	if z then
-		return z
+		if BZ:HasReverseTranslation(z) then
+			return BZ:GetReverseTranslation(z)
+		else
+			return z
+		end
 	else
 		local map = GetMapInfo()
 		if map == "WarsongGulch" then
@@ -473,8 +477,8 @@ function Cartographer:GetCurrentEnglishZoneName()
 			return "Arathi Basin"
 		elseif map == "AlteracValley" then
 			return "Alterac Valley"
-		elseif map == "NetherstormArena" then
-			return "Eye of the Storm"
+		elseif map == "Sunnyglade" then
+			return "Sunnyglade Valley"
 		end
 		return nil
 	end

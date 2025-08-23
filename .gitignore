@@ -1,3 +1,4 @@
 .vscode
 Cartographer.lnk
-extractFoglightValues.py
+extract_foglight_values.py
+extract_map_names.py
